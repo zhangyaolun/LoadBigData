@@ -80,6 +80,8 @@ initPositions();
 
 // 数据起始索引
 let startIndex = ref(0);
+// 实际数据加载起始索引
+let actualStartIndex = ref(0);
 // 数据的结束索引
 let endIndex = ref(0);
 //visibleCount
@@ -105,9 +107,9 @@ let _listData = computed(() =>
 // });
 
 const visibleData = computed(() => {
-  let start = startIndex.value - aboveCount.value;
+  actualStartIndex.value = startIndex.value - aboveCount.value;
   let end = endIndex.value + belowCount.value;
-  return _listData.value.slice(start, end);
+  return _listData.value.slice(actualStartIndex.value, end);
 });
 
 // 获取索引开始位置
@@ -161,8 +163,7 @@ const updateItemSize = () => {
   });
 };
 const setStartOffset = () => {
-  let startOffset =
-    startIndex.value >= 1 ? positions.value[startIndex.value - 1].bottom : 0;
+  let startOffset = actualStartIndex.value >= 1 ? positions.value[actualStartIndex.value - 1].bottom : 0;
   listContainer.value!.style.transform = `translate3d(0,${startOffset}px,0)`;
 };
 
